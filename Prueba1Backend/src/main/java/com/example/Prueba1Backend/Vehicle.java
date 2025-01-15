@@ -1,22 +1,35 @@
 package com.example.Prueba1Backend;
+import java.util.UUID;
 
 public class Vehicle {
     
     private String make;
     private String model;
-    private int yearOfManufacture;
-    private String vehicleType;
-    private String licensePlateNumber;
+    private int year;
+    private String type;
+    private String licensePlate;
+    private String id;
 
-    public Vehicle(String make, String model, int yearOfManufacture, String vehicleType, String licensePlateNumber) {
+    public Vehicle(String make, String model, int year, String type, String licensePlate) {
+        this.id = UUID.randomUUID().toString();
         this.make = make;
         this.model = model;
-        this.yearOfManufacture = yearOfManufacture;
-        this.vehicleType = vehicleType;
-        this.licensePlateNumber = licensePlateNumber;
+        this.year = year;
+        this.type = type;
+        this.licensePlate = licensePlate;
     }
 
+
+    
     // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id.toString();
+    }
+
     public String getMake() {
         return make;
     }
@@ -33,27 +46,27 @@ public class Vehicle {
         this.model = model;
     }
 
-    public int getYearOfManufacture() {
-        return yearOfManufacture;
+    public int getYear() {
+        return year;
     }
 
-    public void setYearOfManufacture(int yearOfManufacture) {
-        this.yearOfManufacture = yearOfManufacture;
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public String getVehicleType() {
-        return vehicleType;
+        return type;
     }
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
+    public void setVehicleType(String type) {
+        this.type = type;
     }
 
-    public String getLicensePlateNumber() {
-        return licensePlateNumber;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicensePlateNumber(String licensePlateNumber) {
-        this.licensePlateNumber = licensePlateNumber;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 }
