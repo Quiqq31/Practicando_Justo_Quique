@@ -54,11 +54,11 @@ public class Vehicle {
         this.year = year;
     }
 
-    public String getVehicleType() {
+    public String getType() {
         return type;
     }
 
-    public void setVehicleType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
