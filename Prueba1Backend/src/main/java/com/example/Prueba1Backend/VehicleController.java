@@ -30,11 +30,12 @@ public class VehicleController {
         ArrayList<Vehicle> vehicleList = jsonManager.getVehicles(); // Call the getVehicles method from the JsonManager object. Returns a list of all the Vehicle objects read from the json file
         
         // Para probar sin frontend
-        newVehicle.setLicensePlate("111"); // Set a new license plate for the new vehicle
-        newVehicle.setMake("Toyota"); // Set a new make for the new vehicle
-        newVehicle.setModel("Corolla"); // Set a new model for the new vehicle
-        newVehicle.setYear(2020); // Set a new year for the new vehicle
-        newVehicle.setType("Sedan"); // Set a new vehicle type for the new vehicle
+        // newVehicle.setLicensePlate("222"); // Set a new license plate for the new vehicle
+        // newVehicle.setMake("Toyota"); // Set a new make for the new vehicle
+        // newVehicle.setModel("Yaris GR"); // Set a new model for the new vehicle
+        // newVehicle.setYear(2024); // Set a new year for the new vehicle
+        // newVehicle.setType("Sedan"); // Set a new vehicle type for the new vehicle
+        // newVehicle.setAvailability(true); // Set the availability of the new vehicle
         // Para probar sin frontend
         
         vehicleList.add(newVehicle); // Add the new vehicle to the list
@@ -45,7 +46,7 @@ public class VehicleController {
 
     // delete vehicles
     @DeleteMapping("/vehicles/{licensePlate}")
-    public String deleteVehicle(@PathVariable String licensePlate) throws IOException {
+    public boolean deleteVehicle(@PathVariable String licensePlate) throws IOException {
         JsonManager manager = new JsonManager(); // Create a JsonManager object
         ArrayList<Vehicle> vehicleList = manager.getVehicles(); // Call the getVehicles method from the JsonManager object. Returns a list of all the Vehicle objects read from the json file
         ArrayList<Vehicle> newVehicleList = new ArrayList<>(); // Create a new list to store the vehicles that are not going to be deleted
@@ -63,9 +64,9 @@ public class VehicleController {
         manager.saveVehicles(newVehicleList); // Call the saveVehicles method from the JsonManager object to save the updated list of vehicles to the json file
 
         if(errasedVehicles.size() == 0){
-            return "NO VEHICLES WERE DELETED. The Vehicle was not found.";
+            return false;
         }else{
-            return "Vehicle with license plate: " + licensePlate + " was deleted successfuly"; // Return a message indicating that the vehicle was deleted
+            return true; // Return a message indicating that the vehicle was deleted
         }
     }
 }

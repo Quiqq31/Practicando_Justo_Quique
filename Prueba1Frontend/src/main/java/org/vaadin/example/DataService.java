@@ -41,4 +41,34 @@ public class DataService {
         ArrayList<Vehicle> vehicles = gson.fromJson(responseBody, vehicleListType);
         return vehicles;
     }
+
+    public static Vehicle creatVehicle(Vehicle vehicle) throws IOException, InterruptedException{
+        Gson gson = new Gson();
+        String body = gson.toJson(vehicle);
+    
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(BACKEND_URL))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(body))
+            .build();
+    
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    
+        return vehicle;
+    }
+
+    public static boolean deleteVehicle(String licensePlate) throws IOException, InterruptedException{
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(BACKEND_URL + "/" + licensePlate))
+            .DELETE()
+            .build();
+    
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+        return Boolean.parseBoolean(response.body());
+    }
 }
