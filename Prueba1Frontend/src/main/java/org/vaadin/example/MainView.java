@@ -9,10 +9,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.component.combobox.ComboBox;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,10 +52,25 @@ public class MainView extends VerticalLayout {
         grid.addColumn(Vehicle::getModel).setHeader("Model");
         grid.addColumn(Vehicle::getYear).setHeader("Year");
         grid.addColumn(Vehicle::getType).setHeader("Type");
+        grid.addColumn(Vehicle::getAvailability).setHeader("Availability");
+
 
         ArrayList<Vehicle> vehicle = DataService.getVehicles();
         grid.setItems(vehicle);
 
-        add(grid);
+        ComboBox<String> availabilityFilter = new ComboBox<>("Availability");
+        availabilityFilter.setItems("Available", "Unavailable", "-");
+        availabilityFilter.addValueChangeListener(event -> {
+            String selected = event.getValue();
+            if ((selected != null) && (selected != "-")) {
+                grid.setItems(vehicle.stream()
+                .filter(v -> (selected.equals("Available") && v.getAvailability()) || (selected.equals("Unavailable") && !v.getAvailability()))
+                    .collect(Collectors.toList()));
+            } else {
+                grid.setItems(vehicle);
+            }
+        });
+
+        add(availabilityFilter, grid);
     }
 }
