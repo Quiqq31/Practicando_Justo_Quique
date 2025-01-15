@@ -9,7 +9,7 @@ import java.util.List;
 
 public class JsonManager {
 
-    private static final String FILE_PATH = "src/main/resources/vehicles.json"; 
+    private static final String FILE_PATH = "src/main/resources/vehicles.json"; // not sure if the path is correct, in case of error take it into account for later
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public List<Vehicle> getVehicles() throws IOException {
