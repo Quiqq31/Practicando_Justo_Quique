@@ -1,22 +1,34 @@
 package com.example.Prueba1Backend;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class JsonManager {
 
-    private static final String FILE_PATH = "src/main/resources/vehicles.json"; // not sure if the path is correct, in case of error take it into account for later
-    private ObjectMapper objectMapper = new ObjectMapper();
+    public ArrayList<Vehicle> getVehicles() throws IOException {
+        String path = "Prueba1Backend/src/main/resources/vehicles.json"; // Updated path to the JSON file
+        String jsonContent = new String(Files.readAllBytes(Paths.get(path))); // Read the JSON file and converts all the bytes into a string
 
-    public List<Vehicle> getVehicles() throws IOException {
-        return objectMapper.readValue(new File(FILE_PATH), new TypeReference<List<Vehicle>>() {});
+        Gson gson = new Gson(); // Create a Gson object
+        Type vehicleType = new TypeToken<ArrayList<Vehicle>>(){}.getType(); // Create a Type object that represents a list of Vehicle objects
+        ArrayList<Vehicle> vehicles = gson.fromJson(jsonContent, vehicleType); // Convert the JSON content into a list of Vehicle objects
+        return vehicles;
     }
 
-    public void saveVehicles(List<Vehicle> vehicles) throws IOException {
-        objectMapper.writeValue(new File(FILE_PATH), vehicles);
+    public void saveVehicles(ArrayList<Vehicle> currentVehicles) throws IOException {
+        String path = "Prueba1Backend/src/main/resources/vehicles.json"; // Updated path to the JSON file
+
+        Gson gson = new Gson(); // Create a Gson object
+        String jsonContent = gson.toJson(currentVehicles); // Convert the list of Vehicle objects into a JSON string
+        Writer writer = Files.newBufferedWriter(Paths.get(path)); // Create a writer object and write the JSON content into the file
+        writer.write(jsonContent); // Write the JSON content into the file
+        writer.close(); // Close the writer
     }
 }
