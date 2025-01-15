@@ -28,7 +28,15 @@ public class VehicleController {
     public ArrayList<Vehicle> createVehicle(@RequestBody Vehicle newVehicle) throws IOException {
         JsonManager jsonManager =  new JsonManager(); // Create a JsonManager object
         ArrayList<Vehicle> vehicleList = jsonManager.getVehicles(); // Call the getVehicles method from the JsonManager object. Returns a list of all the Vehicle objects read from the json file
-
+        
+        // Para probar sin frontend
+        newVehicle.setLicensePlate("111"); // Set a new license plate for the new vehicle
+        newVehicle.setMake("Toyota"); // Set a new make for the new vehicle
+        newVehicle.setModel("Corolla"); // Set a new model for the new vehicle
+        newVehicle.setYear(2020); // Set a new year for the new vehicle
+        newVehicle.setVehicleType("Sedan"); // Set a new vehicle type for the new vehicle
+        // Para probar sin frontend
+        
         vehicleList.add(newVehicle); // Add the new vehicle to the list
         jsonManager.saveVehicles(vehicleList); // Call the saveVehicles method from the JsonManager object to save the updated list of vehicles to the json file
         return vehicleList;
