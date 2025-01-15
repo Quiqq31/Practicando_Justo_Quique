@@ -3,10 +3,19 @@ package org.vaadin.example;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.component.combobox.ComboBox;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -31,30 +40,37 @@ public class MainView extends VerticalLayout {
      *
      * @param service
      *            The message service. Automatically injected Spring managed bean.
+     * @throws InterruptedException 
+     * @throws IOException 
+     * @throws URISyntaxException 
      */
-    public MainView(@Autowired GreetService service) {
+    public MainView(@Autowired GreetService service) throws URISyntaxException, IOException, InterruptedException {
+        
+        Grid<Vehicle> grid = new Grid<>(Vehicle.class, false);
+        grid.addColumn(Vehicle::getLicensePlate).setHeader("License Plate");
+        grid.addColumn(Vehicle::getMake).setHeader("Make");
+        grid.addColumn(Vehicle::getModel).setHeader("Model");
+        grid.addColumn(Vehicle::getYear).setHeader("Year");
+        grid.addColumn(Vehicle::getType).setHeader("Type");
+        grid.addColumn(Vehicle::getAvailability).setHeader("Availability");
 
-        // Use TextField for standard text input
-        TextField textField = new TextField("Your name");
-        textField.addClassName("bordered");
 
-        // Button click listeners can be defined as lambda expressions
-        Button button = new Button("Say hello", e -> {
-            add(new Paragraph(service.greet(textField.getValue())));
+        ArrayList<Vehicle> vehicle = DataService.getVehicles();
+        grid.setItems(vehicle);
+
+        ComboBox<String> availabilityFilter = new ComboBox<>("Availability");
+        availabilityFilter.setItems("Available", "Unavailable", "-");
+        availabilityFilter.addValueChangeListener(event -> {
+            String selected = event.getValue();
+            if ((selected != null) && (selected != "-")) {
+                grid.setItems(vehicle.stream()
+                .filter(v -> (selected.equals("Available") && v.getAvailability()) || (selected.equals("Unavailable") && !v.getAvailability()))
+                    .collect(Collectors.toList()));
+            } else {
+                grid.setItems(vehicle);
+            }
         });
 
-        // Theme variants give you predefined extra styles for components.
-        // Example: Primary button has a more prominent look.
-        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        // You can specify keyboard shortcuts for buttons.
-        // Example: Pressing enter in this view clicks the Button.
-        button.addClickShortcut(Key.ENTER);
-
-        // Use custom CSS classes to apply styling. This is defined in
-        // styles.css.
-        addClassName("centered-content");
-
-        add(textField, button);
+        add(availabilityFilter, grid);
     }
 }

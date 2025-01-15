@@ -34,7 +34,7 @@ public class VehicleController {
         newVehicle.setMake("Toyota"); // Set a new make for the new vehicle
         newVehicle.setModel("Corolla"); // Set a new model for the new vehicle
         newVehicle.setYear(2020); // Set a new year for the new vehicle
-        newVehicle.setVehicleType("Sedan"); // Set a new vehicle type for the new vehicle
+        newVehicle.setType("Sedan"); // Set a new vehicle type for the new vehicle
         // Para probar sin frontend
         
         vehicleList.add(newVehicle); // Add the new vehicle to the list

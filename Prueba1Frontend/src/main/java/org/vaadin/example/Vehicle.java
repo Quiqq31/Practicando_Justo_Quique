@@ -1,8 +1,9 @@
-package com.example.Prueba1Backend;
+package org.vaadin.example;
+
 import java.util.UUID;
 
 public class Vehicle {
-    
+
     private String make;
     private String model;
     private int year;
@@ -11,7 +12,7 @@ public class Vehicle {
     private String id;
     private boolean availability;
 
-    public Vehicle(String make, String model, int year, String type, String licensePlate, Boolean availability) {
+    public Vehicle(String make, String model, int year, String type, String licensePlate, boolean availability) {
         this.id = UUID.randomUUID().toString();
         this.make = make;
         this.model = model;
@@ -22,6 +23,7 @@ public class Vehicle {
     }
 
 
+    
     // Getters and Setters
     public String getId() {
         return id;
